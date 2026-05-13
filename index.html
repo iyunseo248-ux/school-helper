@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>학교 생활 도우미</title>
+
+ <style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+
+  font-family: Arial, sans-serif;
+
+  background:
+    linear-gradient(to bottom right,
+    #dbeafe,
+    #f5f3ff);
+
+  margin: 0;
+  padding: 20px;
+
+  max-width: 600px;
+
+  margin: auto;
+}
+
+h1 {
+
+  text-align: center;
+
+  color: #1e3a8a;
+
+  margin-bottom: 30px;
+
+  font-size: 32px;
+}
+
+h3 {
+
+  color: #374151;
+
+  margin-bottom: 15px;
+}
+
+.box {
+
+  background: white;
+
+  padding: 20px;
+
+  margin-bottom: 20px;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.1);
+
+  transition: 0.2s;
+}
+
+.box:hover {
+
+  transform: translateY(-2px);
+}
+
+input,
+select {
+
+  width: 100%;
+
+  padding: 12px;
+
+  margin-top: 10px;
+
+  border:
+
+    1px solid #d1d5db;
+
+  border-radius: 12px;
+
+  font-size: 15px;
+
+  outline: none;
+}
+
+input:focus,
+select:focus {
+
+  border-color: #6366f1;
+}
+
+button {
+
+  width: 100%;
+
+  margin-top: 12px;
+
+  padding: 12px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #4f46e5;
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+button:hover {
+
+  background: #4338ca;
+}
+
+li {
+
+  list-style: none;
+
+  background: #f9fafb;
+
+  padding: 12px;
+
+  border-radius: 12px;
+
+  margin-top: 10px;
+
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.05);
+}
+
+.done {
+
+  text-decoration: line-through;
+
+  color: gray;
+}
+
+#timer {
+
+  text-align: center;
+
+  font-size: 32px;
+
+  color: #111827;
+
+  margin-top: 15px;
+}
+
+small {
+
+  color: #6b7280;
+}
+
+hr {
+
+  border: none;
+
+  border-top:
+    1px solid #e5e7eb;
+
+  margin: 20px 0;
+}
+.today-card {
+
+  background:
+    linear-gradient(to right,
+    #6366f1,
+    #8b5cf6);
+
+  color: white;
+
+  padding: 25px;
+
+  border-radius: 20px;
+
+  text-align: center;
+
+  margin-bottom: 20px;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.15);
+}
+
+.today-card h1 {
+
+  margin-top: 10px;
+
+  font-size: 40px;
+}
+
+.progress {
+
+  width: 100%;
+
+  height: 25px;
+
+  background: #e5e7eb;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  margin-top: 15px;
+}
+
+#progressBar {
+
+  height: 100%;
+
+  width: 0%;
+
+  background:
+    linear-gradient(to right,
+    #22c55e,
+    #16a34a);
+
+  transition: 0.3s;
+}
+
+.dark {
+
+  background:
+    linear-gradient(to bottom right,
+    #111827,
+    #1f2937);
+
+  color: white;
+}
+
+.dark .box {
+
+  background: #374151;
+
+  color: white;
+}
+
+.dark input,
+.dark select {
+
+  background: #1f2937;
+
+  color: white;
+
+  border: 1px solid #4b5563;
+}
+
+.dark li {
+
+  background: #4b5563;
+}
+
+#darkBtn {
+
+  margin-bottom: 20px;
+
+  background: #111827;
+}
+
+#todayTasks li {
+
+  background:
+    rgba(255,255,255,0.9);
+
+  color: #111827;
+
+  font-weight: bold;
+
+  border-left:
+    6px solid #f59e0b;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  margin-top: 10px;
+}
+/* 오늘 과제 카드 */
+
+#todayTasks {
+
+  list-style: none;
+
+  padding: 0;
+}
+
+#todayTasks li {
+
+  background: rgba(255,255,255,0.9);
+
+  color: #111827;
+
+  font-weight: bold;
+
+  border-left: 6px solid #f59e0b;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  margin-top: 10px;
+}
+
+
+/* 과제 카드 */
+
+.task-card {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  background: white;
+
+  padding: 12px;
+
+  border-radius: 12px;
+
+  margin-top: 10px;
+}
+
+
+/* 삭제 버튼 */
+
+.delete-btn {
+
+  background: #ef4444;
+
+  color: white;
+
+  border: none;
+
+  padding: 8px 12px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+
+/* 공부 카드 */
+
+.study-item {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  background: white;
+
+  padding: 10px;
+
+  border-radius: 10px;
+
+  margin-top: 10px;
+}
+
+
+/* 완료 표시 */
+
+.done {
+
+  text-decoration: line-through;
+
+  color: gray;
+}
+
+
+/* 모바일 반응형 */
+
+@media (max-width: 600px) {
+
+  body {
+
+    padding: 10px;
+  }
+
+  .today-card {
+
+    padding: 20px;
+  }
+
+  h1 {
+
+    font-size: 28px;
+  }
+
+  button {
+
+    width: 100%;
+  }
+}
+</style>
+
+</head>
+
+<body>
+  <button onclick="toggleDarkMode()" id="darkBtn">
+  🌙 다크모드
+</button>
+
+<div class="today-card">
+
+  <h2>📚 오늘 공부</h2>
+
+  <h1 id="todayStudy">
+    0시간 0분
+  </h1>
+
+  <p id="streak">
+    🔥 0일 연속 공부 중
+  </p>
+
+  <hr>
+
+  <h3>📝 오늘 과제</h3>
+
+  <ul id="todayTasks"></ul>
+
+</div>
+
+  <hr>
+
+  <h3>📝 오늘 과제</h3>
+
+  <ul id="todayTasks"></ul>
+
+</div>
+
+<h1>📚 학교 생활 도우미</h1>
+
+<!-- 과제 -->
+<div class="box">
+  <h3>과제 입력</h3>
+
+  <input type="text" id="task" placeholder="과제 내용">
+  <input type="date" id="deadline">
+
+  <select id="importance">
+    <option value="1">낮음🟢</option>
+    <option value="2">보통🟡</option>
+    <option value="3">높음🔴</option>
+  </select>
+
+  <button onclick="addTask()">추가</button>
+</div>
+
+<div class="box">
+  <h3>과제 목록</h3>
+  <ul id="taskList"></ul>
+</div>
+
+<!-- 공부 -->
+<div class="box">
+  <h3>⏱ 공부 기록 (오늘만)</h3>
+
+  <input type="text" id="subject" placeholder="과목">
+<input type="number" id="hour" placeholder="시간">
+
+<input type="number" id="minute" placeholder="분">
+  <input type="date" id="studyDate">
+
+  <button onclick="addStudy()">추가</button>
+
+  <ul id="studyList"></ul>
+
+  <h4>📊 과목별 총합</h4>
+  <ul id="summaryList"></ul>
+
+  <h4 id="totalTime">총 공부 시간: 0시간</h4>
+  <hr>
+
+<h3>🎯 목표 공부시간</h3>
+
+<input type="number" id="goalHour" placeholder="목표 시간">
+
+<input type="number" id="goalMinute" placeholder="목표 분">
+
+<button onclick="calculateGoal()">
+  달성률 확인
+</button>
+
+<h4 id="goalResult">
+  달성률: 0%
+</h4>
+
+<div class="progress">
+  <div id="progressBar"></div>
+</div>
+  <hr>
+
+<h3>📅 이전 공부 기록 보기</h3>
+
+<input type="date" id="searchDate">
+
+<button onclick="searchStudy()">조회</button>
+
+<ul id="searchResult"></ul>
+<hr>
+
+<h3>📊 이번 주 공부 분석</h3>
+
+<button onclick="analyzeWeek()">분석 보기</button>
+
+<ul id="weekAnalysis"></ul>
+</div>
+
+<!-- 타이머 -->
+<div class="box">
+  <h3>⏲ 타이머</h3>
+
+  <button onclick="startTimer()">시작</button>
+  <button onclick="stopTimer()">정지</button>
+
+  <h2 id="timer">0시간 0분 0초</h2>
+</div>
+
+<!-- 캘린더 -->
+<div class="box">
+  <h3>📅 캘린더</h3>
+
+  <input type="date" id="calendarDate">
+  <button onclick="showTasksByDate()">보기</button>
+
+  <ul id="calendarList"></ul>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
